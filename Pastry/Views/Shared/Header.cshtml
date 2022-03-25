@@ -1,0 +1,18 @@
+<header>
+  <div class="header">Pierre's Sweet and Savory Treats</div>
+  <ul class="menu">
+    <li id="home">@Html.ActionLink("Home", "Index", "Home")</li>
+    <li>@Html.ActionLink("Treats", "Index", "Treats")</li>
+    <li>@Html.ActionLink("Flavors", "Index", "Flavors")</li>
+      @if (User.Identity.Name != null)
+      {
+        <li>Hello, <a href="@Url.Action("Index", "Account")" title="Account">@User.Identity.Name</a></li>
+      }
+      else
+      {
+        <li><a href="@Url.Action("Index", "Account")" title="Account" id="account-icon">
+          <img alt="Account" src="@Url.Content("~/Images/account.png")" width="30px"> 
+        </a></li>
+      }
+  </ul>
+</header>
