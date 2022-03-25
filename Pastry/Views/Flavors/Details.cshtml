@@ -13,23 +13,33 @@
 }
 else
 {
-  <h4>Treats the flavor belongs to:</h4>
+  <h4>Treats with this Flavor:</h4>
   <ul class="details">
-  @foreach(var join in Model.JoinEntities)
+  @if (User.Identity.IsAuthenticated)
   {
-    <li>
-      @using (Html.BeginForm("DeleteTreat", "Flavors"))
-      {
-        @Html.Hidden("joinId", @join.TreatFlavorId)
-        <input type="submit" value="X" class="delete" />
-      }
-      @join.Treat.Name
-    </li>
+    @foreach(var join in Model.JoinEntities)
+    {
+      <li>
+        @using (Html.BeginForm("DeleteTreat", "Flavors"))
+        {
+          @Html.Hidden("joinId", @join.TreatFlavorId)
+          <input type="submit" value="X" class="delete" />
+        }
+        @join.Treat.Name
+      </li>
+    }
+  } 
+  else 
+  {
+    @foreach(var join in Model.JoinEntities)
+    {
+      <li>@join.Treat.Name</li>
+    }
   }
   </ul>
 }
 
-@if (ViewBag.UserId != null)
+@if (User.Identity.IsAuthenticated)
 {
   <p class="button">@Html.ActionLink("Add a Treat", "AddTreat", new { id = Model.FlavorId })</p>
   <p class="button">@Html.ActionLink("Edit Flavor", "Edit", new { id = Model.FlavorId })</p>

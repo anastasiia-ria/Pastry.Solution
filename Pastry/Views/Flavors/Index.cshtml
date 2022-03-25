@@ -20,4 +20,7 @@ else
   <h3>No flavors have been added yet!</h3>
 }
 
-<p class="button">@Html.ActionLink("Add new flavor", "Create")</p>
+@if (User.Identity.IsAuthenticated)
+{
+  <p class="button">@Html.ActionLink("Add new flavor", "Create")</p>
+}

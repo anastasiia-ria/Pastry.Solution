@@ -20,4 +20,7 @@ else
   <h3>No treats have been added yet!</h3>
 }
 
-<p class="button">@Html.ActionLink("Add new treat", "Create")</p>
+@if (User.Identity.IsAuthenticated)
+{
+  <p class="button">@Html.ActionLink("Add new treat", "Create")</p>
+}

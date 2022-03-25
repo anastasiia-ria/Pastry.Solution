@@ -1,10 +1,3 @@
-@using Microsoft.AspNetCore.Identity
-@* @inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager *@
-@* @{ 
-    var context = new PrincipalContext(ContextType.Domain);
-    var principal = UserPrincipal.FindByIdentity(context, User.Identity.Name);
-} *@
 <header>
   <div class="header">Pierre's Sweet and Savory Treats</div>
   <ul class="menu">
@@ -13,9 +6,7 @@
     <li>@Html.ActionLink("Flavors", "Index", "Flavors")</li>
       @if (User.Identity.Name != null)
       {
-        @* var context = new PrincipalContext(ContextType.Domain);
-        var principal = UserPrincipal.FindByIdentity(context, User.Identity.Name); *@
-        <li>Hello, <a href="@Url.Action("Index", "Account")" title="Account">@(User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value)!</a></li>
+        <li>Hello, <a href="@Url.Action("Index", "Account")" title="Account" id="user-name">@(User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value)!</a></li>
       }
       else
       {
