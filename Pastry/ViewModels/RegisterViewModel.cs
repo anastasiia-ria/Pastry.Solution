@@ -4,8 +4,10 @@ namespace Pastry.ViewModels
 {
   public class RegisterViewModel
   {
-    [Display(Name = "Name")]
-    public string Name { get; set; }
+    [Required]
+    [DataType(DataType.Text)]
+    [Display(Name = "Full Name")]
+    public string FullName { get; set; }
 
     [Required]
     [EmailAddress]

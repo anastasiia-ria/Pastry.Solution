@@ -29,9 +29,13 @@ namespace Pastry
         .AddDbContext<PastryContext>(options => options
         .UseMySql(Configuration["ConnectionStrings:DefaultConnection"], ServerVersion.AutoDetect(Configuration["ConnectionStrings:DefaultConnection"])));
 
+      services.AddDbContext<PastryContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Security")));
+
       services.AddIdentity<ApplicationUser, IdentityRole>()
         .AddEntityFrameworkStores<PastryContext>()
         .AddDefaultTokenProviders();
+
+      services.AddScoped<Microsoft.AspNetCore.Identity.IUserClaimsPrincipalFactory<ApplicationUser>, AppClaimsPrincipalFactory>();
 
       services.Configure<IdentityOptions>(options =>
       {
