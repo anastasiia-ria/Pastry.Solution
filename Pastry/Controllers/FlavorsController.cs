@@ -29,9 +29,6 @@ namespace Pastry.Controllers
       return View(model);
     }
 
-    //     var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    // var currentUser = await _userManager.FindByIdAsync(userId);
-    // var userFlavors = _db.Flavors.Where(entry => entry.User.Id == currentUser.Id).ToList();
     [Authorize]
     public ActionResult Create()
     {
@@ -41,16 +38,15 @@ namespace Pastry.Controllers
     [HttpPost]
     public async Task<ActionResult> Create(Flavor flavor, int TreatId)
     {
-      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-      var currentUser = await _userManager.FindByIdAsync(userId);
-      flavor.User = currentUser;
-      _db.Flavors.Add(flavor);
-      _db.SaveChanges();
-      if (TreatId != 0)
+      bool exists = _db.Flavors.Any(f => f.Name == flavor.Name);
+      if (!exists)
       {
-        _db.TreatFlavor.Add(new TreatFlavor() { TreatId = TreatId, FlavorId = flavor.FlavorId });
+        var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var currentUser = await _userManager.FindByIdAsync(userId);
+        flavor.User = currentUser;
+        _db.Flavors.Add(flavor);
+        _db.SaveChanges();
       }
-      _db.SaveChanges();
       return RedirectToAction("Index");
     }
 
@@ -60,6 +56,7 @@ namespace Pastry.Controllers
           .Include(flavor => flavor.JoinEntities)
           .ThenInclude(join => join.Treat)
           .FirstOrDefault(flavor => flavor.FlavorId == id);
+      ViewBag.UserId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       return View(thisFlavor);
     }
     [Authorize]
@@ -79,7 +76,7 @@ namespace Pastry.Controllers
       }
       _db.Entry(flavor).State = EntityState.Modified;
       _db.SaveChanges();
-      return RedirectToAction("Index");
+      return RedirectToAction("Details", new { id = flavor.FlavorId });
     }
     [Authorize]
     public ActionResult AddTreat(int id)
@@ -92,12 +89,13 @@ namespace Pastry.Controllers
     [HttpPost]
     public ActionResult AddTreat(Flavor flavor, int TreatId)
     {
-      if (TreatId != 0)
+      bool used = _db.TreatFlavor.Where(f => f.FlavorId == flavor.FlavorId).Any(t => t.TreatId == TreatId);
+      if (TreatId != 0 && !used)
       {
         _db.TreatFlavor.Add(new TreatFlavor() { TreatId = TreatId, FlavorId = flavor.FlavorId });
       }
       _db.SaveChanges();
-      return RedirectToAction("Index");
+      return RedirectToAction("Details", new { id = flavor.FlavorId });
     }
     [Authorize]
     public ActionResult Delete(int id)

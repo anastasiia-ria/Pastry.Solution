@@ -37,8 +37,12 @@ namespace Pastry.Controllers
     [HttpPost]
     public ActionResult Create(Treat treat)
     {
-      _db.Treats.Add(treat);
-      _db.SaveChanges();
+      bool exists = _db.Treats.Any(t => t.Name == treat.Name);
+      if (!exists)
+      {
+        _db.Treats.Add(treat);
+        _db.SaveChanges();
+      }
       return RedirectToAction("Index");
     }
 
@@ -48,6 +52,7 @@ namespace Pastry.Controllers
           .Include(treat => treat.JoinEntities)
           .ThenInclude(join => join.Flavor)
           .FirstOrDefault(treat => treat.TreatId == id);
+      ViewBag.UserId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       return View(thisTreat);
     }
 
@@ -63,7 +68,7 @@ namespace Pastry.Controllers
     {
       _db.Entry(treat).State = EntityState.Modified;
       _db.SaveChanges();
-      return RedirectToAction("Index");
+      return RedirectToAction("Details", new { id = treat.TreatId });
     }
 
     [Authorize]
@@ -77,12 +82,13 @@ namespace Pastry.Controllers
     [HttpPost]
     public ActionResult AddFlavor(Treat treat, int FlavorId)
     {
-      if (FlavorId != 0)
+      bool used = _db.TreatFlavor.Where(t => t.TreatId == treat.TreatId).Any(f => f.FlavorId == FlavorId);
+      if (FlavorId != 0 && !used)
       {
         _db.TreatFlavor.Add(new TreatFlavor() { FlavorId = FlavorId, TreatId = treat.TreatId });
       }
       _db.SaveChanges();
-      return RedirectToAction("Index");
+      return RedirectToAction("Details", new { id = treat.TreatId });
     }
 
     [Authorize]
