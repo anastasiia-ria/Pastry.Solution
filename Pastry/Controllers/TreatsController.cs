@@ -114,7 +114,7 @@ namespace Pastry.Controllers
       var joinEntry = _db.TreatFlavor.FirstOrDefault(entry => entry.TreatFlavorId == joinId);
       _db.TreatFlavor.Remove(joinEntry);
       _db.SaveChanges();
-      return RedirectToAction("Index");
+      return RedirectToAction("Details", new { id = joinEntry.TreatId });
     }
   }
 }
