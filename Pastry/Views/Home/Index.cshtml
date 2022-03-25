@@ -1,0 +1,29 @@
+@{
+  Layout = "_Layout";
+}
+
+@using Pastry.Models;
+
+<h1>Welcome to the Pierre's Sweet and Savory Treats!</h1>
+
+<div class="table">
+  @if (@ViewBag.Treats.Count != 0) {
+    <ul>
+      <li class="column-header">Treats</li>
+      @foreach (Treat treat in @ViewBag.Treats)
+      {
+        <li>@Html.ActionLink($"{treat.Name}", "Details", "Treats", new { id = treat.TreatId })</li>
+      }
+    </ul>
+  }
+  
+  @if (@ViewBag.Flavors.Count != 0) {
+    <ul>
+      <li class="column-header">Flavors</li>
+      @foreach (Flavor flavor in @ViewBag.Flavors)
+      {
+        <li>@Html.ActionLink($"{flavor.Name}", "Details", "Flavors", new { id = flavor.FlavorId })</li>
+      }
+    </ul>
+  }
+</div>
