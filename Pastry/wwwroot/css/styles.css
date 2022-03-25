@@ -150,3 +150,7 @@ label {
   background-color: transparent;
   border: none;
 }
+
+#user-name {
+  text-decoration: underline;
+}
