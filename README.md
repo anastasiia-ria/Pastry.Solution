@@ -55,8 +55,8 @@ Pierre's Sweet and Savory Treats lets users to add and track their flavors and t
   ~/Desktop/Pastry.Solution/Pastry $ dotnet add package Microsoft.EntityFrameworkCore -v 5.0.0
   ~/Desktop/Pastry.Solution/Pastry $ dotnet add package Pomelo.EntityFrameworkCore.MySql -v 5.0.0-alpha.2
   ~/Desktop/Pastry.Solution/Pastry $ dotnet tool install --global dotnet-ef --version 5.0.1
-   ~/Desktop/Pastry.Solution/Pastry $ dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore -v 5.0.0
-   ~/Desktop/Pastry.Solution/Pastry $ dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 5.0.0
+  ~/Desktop/Pastry.Solution/Pastry $ dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore -v 5.0.0
+  ~/Desktop/Pastry.Solution/Pastry $ dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 5.0.0
   ```
 - Update Database:
   ```
